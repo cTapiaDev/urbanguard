@@ -7,17 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.urbanguard.R
 import com.example.urbanguard.core.BaseFragment
-import com.example.urbanguard.databinding.FragmentHomeBinding
+import com.example.urbanguard.databinding.FragmentCreateReportBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
+class CreateReportFragment : BaseFragment<FragmentCreateReportBinding>(FragmentCreateReportBinding::inflate) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.tvHome.text = "Bienvenidos a UrbanGuard"
     }
-
 }

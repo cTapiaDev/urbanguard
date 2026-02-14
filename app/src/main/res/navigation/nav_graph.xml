@@ -9,5 +9,24 @@
         android:id="@+id/homeFragment"
         android:name="com.example.urbanguard.ui.screens.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_createReportFragment2"
+            app:destination="@id/createReportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.urbanguard.ui.screens.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/createReportFragment"
+        android:name="com.example.urbanguard.ui.screens.CreateReportFragment"
+        android:label="fragment_create_report"
+        tools:layout="@layout/fragment_create_report" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.urbanguard.ui.screens.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
 </navigation>

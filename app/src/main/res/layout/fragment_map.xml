@@ -4,11 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.screens.HomeFragment">
+    tools:context=".ui.screens.MapFragment">
 
     <TextView
-        android:id="@+id/tvHome"
-        android:text="Home Fragment"
+        android:text="Map Fragment"
         android:textSize="30sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
