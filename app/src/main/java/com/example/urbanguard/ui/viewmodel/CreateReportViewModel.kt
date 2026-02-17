@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.urbanguard.R
 import com.example.urbanguard.core.di.IoDispatcher
+import com.example.urbanguard.domain.usecase.CreateReportUseCase
+import com.example.urbanguard.domain.usecase.ValidateReportUseCase
 import com.example.urbanguard.ui.viewmodel.state.CreateReportUiEvent
 import com.example.urbanguard.ui.viewmodel.state.CreateReportUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateReportViewModel @Inject constructor(
+    private val validateReportUseCase: ValidateReportUseCase,
+    private val createReportUseCase: CreateReportUseCase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -35,7 +39,7 @@ class CreateReportViewModel @Inject constructor(
 
     fun onTitleChanged(text: String) {
         currentTitle = text
-        validateForm()
+        val result = validateReportUseCase.execute(currentTitle, currentDescription)
     }
 
     fun onDescriptionChanged(text: String) {
@@ -67,15 +71,19 @@ class CreateReportViewModel @Inject constructor(
             // Simulamos carga de red
             delay(3000)
 
-            val success = true
+            val result = createReportUseCase(
+                title = currentTitle,
+                description = currentDescription,
+                photoUri = _uiState.value.photoUri?.toString()
+            )
 
-            if (success) {
-                _uiState.update { it.copy(isLoading = false) }
+            result.onSuccess {
                 _uiEvent.send(CreateReportUiEvent.SuccessNavigation)
-            } else {
-                _uiState.update { it.copy(isLoading = false) }
-                _uiEvent.send(CreateReportUiEvent.ShowError("Error al subir reporte"))
+            }.onFailure { error ->
+                _uiEvent.send(CreateReportUiEvent.ShowError(error.message ?: "Error al subir reporte"))
             }
+
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
 }
