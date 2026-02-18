@@ -36,3 +36,10 @@ La ONG "Naturaleza Viva" necesita una aplicación robusta para registrar la biod
   - <b>Modelos Puros:</b> Crear la data class `Sighting` en la capa `domain`. No debe tener anotaciones de Android.
   - <b>Repository Interface:</b> Definir `SightingRepository` como una interfaz en el dominio.
   - <b>Use Cases:</b> La lógica de validación (ej: "El nombre de la especie no puede estar vacío") debe estar extraída en una clase `ValidateSightingUseCase`. El ViewModel debe inyectar y llamar a este Use Case, no hacer la validación él mismo. 
+
+---
+
+## Requerimientos Segunda Parte (18/02)
+- Crear `SightingEntity`, DAO asociado y un `SightingMapper` para poder mover la información entre Entity >> Domain y viceversa.
+- Implementar `SightingAdapter` para RecyclerView.
+- Crear un ViewModel especializado para el RecyclerView y crear su diseño en homeFragment.
