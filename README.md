@@ -43,3 +43,12 @@ La ONG "Naturaleza Viva" necesita una aplicación robusta para registrar la biod
 - Crear `SightingEntity`, DAO asociado y un `SightingMapper` para poder mover la información entre Entity >> Domain y viceversa.
 - Implementar `SightingAdapter` para RecyclerView.
 - Crear un ViewModel especializado para el RecyclerView y crear su diseño en homeFragment.
+
+---
+
+## Requerimientos Tercera Parte (20/02)
+- <b>Selector Híbrido:</b> El usuario debe poder elegir entre tomar una foto nueva (CameraX) o seleccionar una de la galería (PhotoPicker).
+- <b>Persistencia Directa:</b> Las fotos capturadas no deben guardarse en caché temporal; deben almacenarse en una carpeta llamada `BioDex_Photos` dentro del almacenamiento de la aplicación.
+- <b>Feedback Visual:</b> Implementar un botón de `Eliminar Foto` que aparezca sobre la `ImageVie` una vez que la foto haya sido cargada, permitiendo al usuario volver a activar la cámara si se equivocó.
+- <b>Estado Global:</b> El `btnSubmitSighting` solo debe estar habilitado si existe un URI válido en el `uiState` del ViewModel.
+
