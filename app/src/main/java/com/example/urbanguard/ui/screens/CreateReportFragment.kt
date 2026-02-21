@@ -1,6 +1,8 @@
 package com.example.urbanguard.ui.screens
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import com.example.urbanguard.R
@@ -22,20 +32,118 @@ import androidx.navigation.fragment.findNavController
 import com.example.urbanguard.core.extension.collectFlow
 import com.example.urbanguard.ui.viewmodel.state.CreateReportUiEvent
 import com.example.urbanguard.ui.viewmodel.state.CreateReportUiState
+import timber.log.Timber
+import java.io.File
 
 @AndroidEntryPoint
 class CreateReportFragment : BaseFragment<FragmentCreateReportBinding>(FragmentCreateReportBinding::inflate) {
 
     private val viewModel: CreateReportViewModel by viewModels()
+    private var imageCapture: ImageCapture? = null
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            startCamera()
+        } else {
+            Toast.makeText(requireContext(), "Permiso de cámara denegado", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private val pickMediaLauncher = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) {
+            viewModel.onPhotoSelected(uri)
+            binding.ivReportPhoto.setImageURI(uri)
+            binding.ivReportPhoto.visibility = View.VISIBLE
+            binding.viewFinder.visibility = View.GONE
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkCameraPermission()
         initListeners()
         initObservers()
     }
 
+    private fun checkCameraPermission() {
+        when {
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
+                startCamera()
+            }
+            else -> requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
+
+    private fun startCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+
+        cameraProviderFuture.addListener({
+            val cameraProvider = cameraProviderFuture.get()
+
+            val preview = Preview.Builder()
+                .build()
+                .also { it.setSurfaceProvider(binding.viewFinder.surfaceProvider) }
+
+            imageCapture = ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                .build()
+
+            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+            try {
+                cameraProvider.unbindAll()
+                cameraProvider.bindToLifecycle(
+                    viewLifecycleOwner,
+                    cameraSelector,
+                    preview,
+                    imageCapture
+                )
+            } catch (e: Exception) {
+                Timber.e("Error al iniciar la cámara: ${e.message}")
+            }
+        }, ContextCompat.getMainExecutor(requireContext()))
+    }
+
+    private fun takePhoto() {
+        val imageCapture = imageCapture ?: return
+
+        val photoFile = File(
+            requireContext().externalCacheDir,
+            "URBAN_REPORT_${System.currentTimeMillis()}.jpg"
+        )
+
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+
+        imageCapture.takePicture(
+            outputOptions,
+            ContextCompat.getMainExecutor(requireContext()),
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    val savedUri = Uri.fromFile(photoFile)
+                    viewModel.onPhotoSelected(savedUri)
+                    binding.ivReportPhoto.setImageURI(savedUri)
+                    binding.ivReportPhoto.visibility = View.VISIBLE
+                    binding.viewFinder.visibility = View.GONE
+                }
+
+                override fun onError(exception: ImageCaptureException) {
+                    Timber.e("Error de captura: ${exception.message}")
+                }
+
+            }
+        )
+    }
+
+
+
     private fun initListeners() {
         with(binding) {
+            btnCapturePhoto.setOnClickListener { takePhoto() }
+
             etTitle.doAfterTextChanged { text ->
                 viewModel.onTitleChanged(text.toString())
             }
@@ -49,8 +157,8 @@ class CreateReportFragment : BaseFragment<FragmentCreateReportBinding>(FragmentC
                 hideKeyboard()
             }
 
-            cvPhotoContainer.setOnClickListener {
-                viewModel.onPhotoSelected("https://i.pinimg.com/736x/7f/af/b9/7fafb9d4b589a67f9115f9a258a2b4a4.jpg".toUri())
+            binding.llPhotoPlaceholder.setOnClickListener {
+                pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
     }

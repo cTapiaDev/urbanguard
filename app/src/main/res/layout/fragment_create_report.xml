@@ -32,13 +32,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <androidx.camera.view.PreviewView
+                    android:id="@+id/view_finder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
                 <ImageView
                     android:id="@+id/iv_report_photo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:visibility="gone"
-                    tools:src="@tools:sample/backgrounds/scenic"
                     />
 
                 <LinearLayout
@@ -52,20 +56,13 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent">
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                    <ImageButton
+                        android:id="@+id/btn_capture_photo"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@drawable/ic_camera_alt_24"
-                        app:tint="?attr/colorPrimary"
-                        android:contentDescription="Icono cámara"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Toca para tomar foto"
-                        android:layout_marginTop="8dp"
-                        android:textColor="?attr/colorPrimary"/>
+                        app:tint="@color/white"/>
 
                 </LinearLayout>
 

@@ -13,22 +13,4 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DomainModule {
 
-    // PROVISIONAL
-    @Provides
-    @Singleton
-    fun provideReportRepository(): ReportRepository {
-        return object : ReportRepository {
-            override fun getAllReports() = flowOf(emptyList<Report>())
-            override suspend fun getReportById(id: String) = null
-
-            override suspend fun createReport(report: Report): Result<Boolean> {
-                return Result.success(true)
-            }
-
-            override suspend fun uploadPhoto(uri: String): Result<String> {
-                return Result.success("https://i.pinimg.com/736x/7f/af/b9/7fafb9d4b589a67f9115f9a258a2b4a4.jpg")
-            }
-
-        }
-    }
 }

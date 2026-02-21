@@ -19,7 +19,7 @@
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:contentDescription="Reporte en imagen"
-            android:src="@drawable/ic_launcher_background"
+            tools:src="@tools:sample/backgrounds/scenic"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>

@@ -5,6 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.RoundedCornersTransformation
+import com.example.urbanguard.R
 import com.example.urbanguard.databinding.ItemReportBinding
 import com.example.urbanguard.domain.model.Report
 
@@ -35,6 +38,13 @@ class ReportAdapter(
                 tvDescription.text = report.description
                 tvStatus.text = report.status.name
 
+                ivReportImage.load(report.photoUrl) {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_launcher_background)
+                    error(R.drawable.ic_launcher_background)
+                    transformations(RoundedCornersTransformation(12f))
+                }
+
                 root.setOnClickListener {  }
             }
         }
@@ -45,14 +55,14 @@ class ReportAdapter(
             oldItem: Report,
             newItem: Report
         ): Boolean {
-            TODO("Not yet implemented")
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
             oldItem: Report,
             newItem: Report
         ): Boolean {
-            TODO("Not yet implemented")
+            return oldItem == newItem
         }
 
     }
