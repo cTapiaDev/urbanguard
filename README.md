@@ -52,3 +52,10 @@ La ONG "Naturaleza Viva" necesita una aplicación robusta para registrar la biod
 - <b>Feedback Visual:</b> Implementar un botón de `Eliminar Foto` que aparezca sobre la `ImageVie` una vez que la foto haya sido cargada, permitiendo al usuario volver a activar la cámara si se equivocó.
 - <b>Estado Global:</b> El `btnSubmitSighting` solo debe estar habilitado si existe un URI válido en el `uiState` del ViewModel.
 
+---
+
+## Requerimientos Cuarta Parte (23/02)
+- Crear `SightingFileManager` para gestionar archivos en Scoped Storage.
+- Implementar el `ImageProcessor` limitando las fotos a <b>1000px</b> para máxima compatibilidad con dispositivos de gama baja.
+- El procesamiento DEBE realizar en `Dispatchers.IO`.
+- Vincular el estado `isLoading` del ViewModel a un `CircularProgressIndicator` en el Fragment.
