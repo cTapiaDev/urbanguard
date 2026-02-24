@@ -55,7 +55,7 @@ class CreateReportFragment : BaseFragment<FragmentCreateReportBinding>(FragmentC
         ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         if (uri != null) {
-            viewModel.onPhotoSelected(uri)
+            viewModel.onPhotoSelected(requireContext(), uri)
             binding.ivReportPhoto.setImageURI(uri)
             binding.ivReportPhoto.visibility = View.VISIBLE
             binding.viewFinder.visibility = View.GONE
@@ -124,7 +124,7 @@ class CreateReportFragment : BaseFragment<FragmentCreateReportBinding>(FragmentC
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
-                    viewModel.onPhotoSelected(savedUri)
+                    viewModel.onPhotoSelected(requireContext(), savedUri)
                     binding.ivReportPhoto.setImageURI(savedUri)
                     binding.ivReportPhoto.visibility = View.VISIBLE
                     binding.viewFinder.visibility = View.GONE

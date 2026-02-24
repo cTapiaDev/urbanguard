@@ -74,4 +74,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
+    // Metadata Image
+    implementation("androidx.exifinterface:exifinterface:1.3.0")
+
 }

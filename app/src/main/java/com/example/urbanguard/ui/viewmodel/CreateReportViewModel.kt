@@ -1,10 +1,13 @@
 package com.example.urbanguard.ui.viewmodel
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.urbanguard.R
+import com.example.urbanguard.core.di.FileManager
 import com.example.urbanguard.core.di.IoDispatcher
+import com.example.urbanguard.core.utils.ImageProcessor
 import com.example.urbanguard.domain.usecase.CreateReportUseCase
 import com.example.urbanguard.domain.usecase.ValidateReportUseCase
 import com.example.urbanguard.ui.viewmodel.state.CreateReportUiEvent
@@ -19,12 +22,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateReportViewModel @Inject constructor(
     private val validateReportUseCase: ValidateReportUseCase,
     private val createReportUseCase: CreateReportUseCase,
+    private val fileManager: FileManager,
+    private val imageProcessor: ImageProcessor,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -47,9 +53,21 @@ class CreateReportViewModel @Inject constructor(
         validateForm()
     }
 
-    fun onPhotoSelected(uri: Uri) {
-        _uiState.update { it.copy(photoUri = uri) }
-        validateForm()
+    fun onPhotoSelected(context: Context, uri: Uri) {
+        viewModelScope.launch(dispatcher) {
+            _uiState.update { it.copy(isLoading = true) }
+
+            val interalFile = fileManager.createInternalFile()
+            val optimizedPath = imageProcessor.process(context, uri, interalFile)
+
+            _uiState.update { state ->
+                state.copy(
+                    photoUri = optimizedPath?.let { Uri.fromFile(File(it)) },
+                    isLoading = false
+                )
+            }
+            validateForm()
+        }
     }
 
     private fun validateForm() {

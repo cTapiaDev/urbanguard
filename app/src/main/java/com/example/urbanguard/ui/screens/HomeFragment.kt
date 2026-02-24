@@ -1,16 +1,14 @@
 package com.example.urbanguard.ui.screens
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.urbanguard.R
 import com.example.urbanguard.core.BaseFragment
 import com.example.urbanguard.core.extension.collectFlow
+import com.example.urbanguard.core.utils.MemoryCrusher
 import com.example.urbanguard.databinding.FragmentHomeBinding
 import com.example.urbanguard.ui.adapter.ReportAdapter
 import com.example.urbanguard.ui.viewmodel.HomeViewModel
@@ -26,7 +24,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupRecyclerView()
         initListeners()
         initObservers()

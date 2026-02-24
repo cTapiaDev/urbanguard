@@ -32,6 +32,6 @@ class ReportRepositoryImpl @Inject constructor(
     }
 
     override suspend fun uploadPhoto(uri: String): Result<String> {
-        return Result.success("https://urbanguard.ai/storage/fakes/photo1.jpg")
+        return Result.success(uri)
     }
 }
