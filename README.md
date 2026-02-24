@@ -59,3 +59,14 @@ La ONG "Naturaleza Viva" necesita una aplicación robusta para registrar la biod
 - Implementar el `ImageProcessor` limitando las fotos a <b>1000px</b> para máxima compatibilidad con dispositivos de gama baja.
 - El procesamiento DEBE realizar en `Dispatchers.IO`.
 - Vincular el estado `isLoading` del ViewModel a un `CircularProgressIndicator` en el Fragment.
+
+---
+
+## Requerimientos Quinta Parte (24/02)
+- Integrar la dependencia de `play-services-location`
+- Implementar el flujo de permisos `FINE` y `COARSE` en `CreateSightingFragment`.
+- Obtener la ubicación al abrir el fragmento de creación y realizar el <b>Reverse Geocoding</b>
+- Añadir `latitude`, `longitude` y `address` a su `CreateSightingUiState`.
+- Implementar las funciones necesarios en `CreateSightingViewModel`
+- El botón de envío en BioDex debe estar deshabilitado hasta que las coordenadas sean distintas de nulo.
+- Guardar las coordenadas en la base de datos `SightingEntity` (Room).
