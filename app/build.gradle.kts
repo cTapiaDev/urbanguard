@@ -53,8 +53,8 @@ dependencies {
     // Hilt (Inyección de Dependencias)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    implementation("com.squareup.moshi:moshi-kotlin:1.15.2")
-    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.2")
+    implementation(libs.moshi.kotlin)
+    ksp(libs.moshi.kotlin.codegen)
 
     // Utils
     implementation(libs.timber)
@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
+    implementation(libs.play.services.location)
 
     // Retrofit (Red/API)
     implementation(libs.retrofit)
@@ -75,6 +76,6 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     // Metadata Image
-    implementation("androidx.exifinterface:exifinterface:1.3.0")
+    implementation(libs.androidx.exifinterface)
 
 }

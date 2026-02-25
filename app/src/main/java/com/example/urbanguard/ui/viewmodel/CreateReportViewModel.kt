@@ -43,6 +43,22 @@ class CreateReportViewModel @Inject constructor(
     private var currentTitle = ""
     private var currentDescription = ""
 
+    fun onLocationCaptured(lat: Double, lng: Double) {
+        _uiState.update { state ->
+            state.copy(
+                latitude = lat,
+                longitude = lng
+            )
+        }
+        validateForm()
+    }
+
+    fun onAddressUpdate(address: String) {
+        _uiState.update { state ->
+            state.copy(address = address)
+        }
+    }
+
     fun onTitleChanged(text: String) {
         currentTitle = text
         val result = validateReportUseCase.execute(currentTitle, currentDescription)
@@ -73,11 +89,13 @@ class CreateReportViewModel @Inject constructor(
     private fun validateForm() {
         val isTitleValid = currentTitle.length >= 5
         val isDescValid = currentDescription.length >= 10
+        val hasPhoto = _uiState.value.photoUri != null
+        val hasLocation = _uiState.value.latitude != null && _uiState.value.longitude != null
 
         _uiState.update { state ->
             state.copy(
                 titleError = if (currentTitle.isNotEmpty() && !isTitleValid) R.string.error_title_short else null,
-                isFormValid = isTitleValid && isDescValid
+                isFormValid = isTitleValid && isDescValid && hasPhoto && hasLocation
             )
         }
     }
@@ -104,4 +122,6 @@ class CreateReportViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = false) }
         }
     }
+
+
 }
