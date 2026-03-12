@@ -70,3 +70,16 @@ La ONG "Naturaleza Viva" necesita una aplicación robusta para registrar la biod
 - Implementar las funciones necesarios en `CreateSightingViewModel`
 - El botón de envío en BioDex debe estar deshabilitado hasta que las coordenadas sean distintas de nulo.
 - Guardar las coordenadas en la base de datos `SightingEntity` (Room).
+
+---
+
+## Requerimientos Sexta Parte (12/03)
+- Crear `SightingDto` con las propiedades de sus avistamientos (id, nombreEspecie, ubicacion, etc.)
+- Hacer el `SightingMapper` para pasar de DTO a Dominio y viceversa.
+- Crear la interfaz `BioDexApiService` con métodos GET y POST usando Retrofit.
+- Implementar `SightingRemoteDataSource` controlando los hilos con Dispatchers.IO
+- Hacer las inyecciones con Hilt.
+- Inyectar `SightingRemoteDataSource` dentro de su `SightingRepositoryImpl`.
+- Crear la función privada `syncSightings()` que baje la data de MockAPI y la inserte en Room usando sus mappers.
+- Modificar el `Flow` que devuelve la lista de avistamientos para que use el operador `.onStart { syncSightings() }`
+- Modificar la creación de avistamientos para que intente pegarle al POST de Retrofit primero, y si falla, lo guarde en local (Aviso: para este punto aun es posible que la sincronización de datos falle, la puliremos en una clase dedicada a manejo de errores).
