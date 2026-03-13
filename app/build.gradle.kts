@@ -19,8 +19,9 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"https://65...mockapi.io/api/v1/\"")
+        buildConfigField("String", "BASE_URL", "\"https://69b32d2be224ec066bdb9e78.mockapi.io/api/v1/\"")
     }
+
 
     buildFeatures {
         viewBinding = true
@@ -78,4 +79,6 @@ dependencies {
     // Metadata Image
     implementation(libs.androidx.exifinterface)
 
+    // Maps
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
 }

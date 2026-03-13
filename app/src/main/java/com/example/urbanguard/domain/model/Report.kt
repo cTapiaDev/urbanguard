@@ -9,6 +9,7 @@ data class Report (
     val photoUrl: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
+    val address: String? = null,
     val status: ReportStatus = ReportStatus.PENDING,
     val timestamp: Date = Date()
 )

@@ -10,7 +10,10 @@ class CreateReportUseCase @Inject constructor(
     suspend operator fun invoke(
         title: String,
         description: String,
-        photoUri: String?
+        photoUri: String?,
+        latitude: Double?,
+        longitude: Double?,
+        address: String?
     ): Result<Boolean> {
 
         var finalPhotoUrl: String? = null
@@ -27,7 +30,10 @@ class CreateReportUseCase @Inject constructor(
         val newReport = Report(
             title = title,
             description = description,
-            photoUrl = finalPhotoUrl
+            photoUrl = finalPhotoUrl,
+            latitude = latitude,
+            longitude = longitude,
+            address = address
         )
 
 

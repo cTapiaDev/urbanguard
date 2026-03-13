@@ -61,7 +61,10 @@ class CreateReportViewModel @Inject constructor(
 
     fun onTitleChanged(text: String) {
         currentTitle = text
-        val result = validateReportUseCase.execute(currentTitle, currentDescription)
+        // 🟢 Variable result eliminada si no se usa para mantener el código limpio
+        validateReportUseCase.execute(currentTitle, currentDescription)
+        // 🟢 Faltaba disparar la validación del formulario al cambiar el título
+        validateForm()
     }
 
     fun onDescriptionChanged(text: String) {
@@ -107,10 +110,16 @@ class CreateReportViewModel @Inject constructor(
             // Simulamos carga de red
             delay(3000)
 
+            // 🟢 Capturamos una copia inmutable del estado actual para extraer los datos de forma segura
+            val currentState = _uiState.value
+
             val result = createReportUseCase(
                 title = currentTitle,
                 description = currentDescription,
-                photoUri = _uiState.value.photoUri?.toString()
+                photoUri = _uiState.value.photoUri?.toString(),
+                latitude = currentState.latitude,
+                longitude = currentState.longitude,
+                address = currentState.address
             )
 
             result.onSuccess {

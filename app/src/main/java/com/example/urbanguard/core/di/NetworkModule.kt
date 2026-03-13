@@ -1,6 +1,7 @@
 package com.example.urbanguard.core.di
 
 import com.example.urbanguard.BuildConfig
+import com.example.urbanguard.data.remote.api.UrbanGuardApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -49,5 +50,11 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideUrbanGuardApiService(retrofit: Retrofit): UrbanGuardApiService {
+        return retrofit.create(UrbanGuardApiService::class.java)
     }
 }
